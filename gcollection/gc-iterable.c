@@ -34,8 +34,8 @@ gc_iterable_default_init (GcIterableInterface *iface)
  * Returns: A new iterator
  */
 GcIterator *
-gc_iterable_iterate (GcIterable *self)
+gc_iterable_iterator (GcIterable *self)
 {
-    return GC_ITERABLE_GET_INTERFACE(self)->iterate(self);
+    return GC_ITERABLE_GET_INTERFACE(self)->iterator(self);
 }
 
