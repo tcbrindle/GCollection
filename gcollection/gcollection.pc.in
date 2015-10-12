@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+datarootdir=@datarootdir@
+datadir=@datadir@
+includedir=@includedir@
+
+Name: gcollection
+Description: GObject collections library
+Version: @VERSION@
+Requires: 
+Libs: -L${libdir} -lgcollection
+Cflags: -I${includedir}
