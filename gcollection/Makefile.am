@@ -6,6 +6,7 @@ lib_LTLIBRARIES = libgcollection.la
 
 libgcollection_la_SOURCES = \
 	gc-iterable.c gc-iterable.h \
+	gc-iterator.c gc-iterator.h \
 	$(NULL)
 
 libgcollection_la_CPPFLAGS = \
@@ -27,6 +28,7 @@ libgcollection_la_LIBADD = \
 
 include_HEADERS = \
 	gc-iterable.h \
+	gc-iterator.h \
 	${NULL}
 
 pkgconfigdir = $(libdir)/pkgconfig
