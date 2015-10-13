@@ -418,13 +418,15 @@ gc_array_list_iter_new (GcArrayList *array)
 static gboolean
 gc_array_list_iter_next (GcIterator *iter)
 {
-  return FALSE;
+  GcArrayListIter *self = GC_ARRAY_LIST_ITER (iter);
+  return (++self->pos < self->array->ptr_array->len);
 }
 
 static gpointer
 gc_array_list_iter_get (GcIterator *iter)
 {
-  return NULL;
+  GcArrayListIter *self = GC_ARRAY_LIST_ITER (iter);
+  return g_ptr_array_index (self->array->ptr_array, self->pos);
 }
 
 static void
@@ -452,5 +454,6 @@ gc_array_list_iter_class_init (GcArrayListIterClass *klass)
 static void
 gc_array_list_iter_init (GcArrayListIter *self)
 {
+  self->pos = -1;
 }
 
