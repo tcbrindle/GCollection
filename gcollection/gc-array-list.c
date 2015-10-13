@@ -125,6 +125,24 @@ gc_array_list_new_full (GType element_type,
 }
 
 /**
+ * gc_array_list_clear:
+ * @array: A #GcArrayList
+ *
+ * Removes all elements from @array
+ */
+void
+gc_array_list_clear (GcArrayList *self)
+{
+  g_return_if_fail (GC_IS_ARRAY_LIST (self));
+
+  g_ptr_array_unref (self->ptr_array);
+  self->ptr_array = g_ptr_array_new_with_free_func (self->free_func);
+
+  g_object_notify (G_OBJECT (self), "size");
+  g_object_notify (G_OBJECT (self), "is-empty");
+}
+
+/**
  * gc_array_list_get_ptr_array:
  * @array: A #GcArrayList
  *

@@ -37,6 +37,8 @@ GcArrayList     *gc_array_list_new_full               (GType          element_ty
                                                        GBoxedCopyFunc copy_func,
                                                        GDestroyNotify free_func);
 
+void             gc_array_list_clear                  (GcArrayList *array);
+
 GPtrArray       *gc_array_list_get_ptr_array          (GcArrayList *array);
 
 guint            gc_array_list_get_size               (GcArrayList *array);
