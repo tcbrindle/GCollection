@@ -23,6 +23,8 @@
 
 struct _GcArrayList
 {
+  GObject parent;
+
   GPtrArray *ptr_array;
   GType element_type;
   GBoxedCopyFunc copy_func;
@@ -391,6 +393,8 @@ G_DECLARE_FINAL_TYPE (GcArrayListIter, gc_array_list_iter, GC, ARRAY_LIST_ITER, 
 
 struct _GcArrayListIter
 {
+  GcIterator parent;
+
   GcArrayList *array;
   gsize pos;
 };
