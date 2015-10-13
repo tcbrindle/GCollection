@@ -210,6 +210,20 @@ gc_array_list_set (GcArrayList *self, gsize index, gpointer value)
   self->free_func (old_element);
 }
 
+void
+gc_array_list_append (GcArrayList *self, gpointer value)
+{
+  g_return_if_fail (GC_IS_ARRAY_LIST (self));
+
+  g_ptr_array_add (self->ptr_array, self->copy_func (value));
+}
+
+/******************************************************************************
+ *
+ * Internal functions
+ *
+ ******************************************************************************/
+
 static GcIterator *
 gc_array_list_iterator (GcIterable *iterable)
 {
