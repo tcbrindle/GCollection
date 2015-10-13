@@ -239,7 +239,12 @@ gc_array_list_constructed (GObject *object)
 {
   GcArrayList *self = GC_ARRAY_LIST (object);
 
-  self->ptr_array = g_ptr_array_new_with_free_func (self->free_func);
+  if (!self->ptr_array)
+    {
+      self->ptr_array = g_ptr_array_new_with_free_func (self->free_func);
+    }
+
+  G_OBJECT_CLASS (gc_array_list_parent_class)->constructed (object);
 }
 
 static void
