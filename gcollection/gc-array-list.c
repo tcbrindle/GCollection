@@ -88,7 +88,7 @@ gc_array_list_new_with_element_type (GType element_type)
   g_return_val_if_fail (g_type_is_a (element_type, G_TYPE_OBJECT), NULL);
 
   return gc_array_list_new_full (element_type,
-                                 g_object_ref,
+                                 g_object_ref_sink,
                                  g_object_unref);
 }
 
