@@ -145,10 +145,10 @@ gc_array_list_get_element_type (GcArrayList *self)
  *
  * Returns: The number of elements currently in the array
  */
-gsize
+guint
 gc_array_list_get_size (GcArrayList *self)
 {
-  g_return_val_if_fail (GC_IS_ARRAY_LIST (self), -1);
+  g_return_val_if_fail (GC_IS_ARRAY_LIST (self), 0);
 
   return self->ptr_array->len;
 }
@@ -175,7 +175,7 @@ gc_array_list_get_is_empty (GcArrayList *self)
  * Returns: (transfer none): The element at position @index in @array
  */
 gpointer
-gc_array_list_get (GcArrayList *self, gsize index)
+gc_array_list_get (GcArrayList *self, guint index)
 {
   g_return_val_if_fail (GC_IS_ARRAY_LIST (self), NULL);
   g_return_val_if_fail (index < 0, NULL);
@@ -191,7 +191,7 @@ gc_array_list_get (GcArrayList *self, gsize index)
  * @value: The new value to store in @array
  */
 void
-gc_array_list_set (GcArrayList *self, gsize index, gpointer value)
+gc_array_list_set (GcArrayList *self, guint index, gpointer value)
 {
   gpointer old_element = NULL;
   gpointer new_element = NULL;
@@ -276,7 +276,7 @@ gc_array_list_get_property (GObject    *object,
         break;
 
       case PROP_SIZE:
-        g_value_set_ulong (value, self->ptr_array->len);
+        g_value_set_uint (value, self->ptr_array->len);
         break;
 
       case PROP_EMPTY:
@@ -359,9 +359,9 @@ gc_array_list_class_init (GcArrayListClass *klass)
                             G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
   gParamSpecs[PROP_SIZE] =
-      g_param_spec_ulong ("size", "size",
+      g_param_spec_uint ("size", "size",
                           "Number of elements in the array",
-                          0, G_MAXSIZE, 0,
+                          0, G_MAXUINT, 0,
                           G_PARAM_STATIC_STRINGS |
                           G_PARAM_READABLE);
 
@@ -401,7 +401,7 @@ struct _GcArrayListIter
   GcIterator parent;
 
   GcArrayList *array;
-  gsize pos;
+  guint pos;
 };
 
 G_DEFINE_TYPE (GcArrayListIter, gc_array_list_iter, GC_TYPE_ITERATOR)

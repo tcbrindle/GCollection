@@ -40,9 +40,9 @@ GcArrayList     *gc_array_list_new_full               (GType          element_ty
 GPtrArray       *gc_array_list_get_ptr_array          (GcArrayList *array);
 
 gpointer         gc_array_list_get                    (GcArrayList *array,
-                                                       gsize        index);
+                                                       guint        index);
 
-gsize            gc_array_list_get_size               (GcArrayList *array);
+guint            gc_array_list_get_size               (GcArrayList *array);
 
 gboolean         gc_array_list_empty                  (GcArrayList *array);
 
