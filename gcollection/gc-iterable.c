@@ -26,12 +26,12 @@ gc_iterable_default_init (GcIterableInterface *iface)
 }
 
 /**
- * gc_iterable_iterate:
+ * gc_iterable_iterator:
  * @iterable: A #GcIterable
  *
  * FIXME
  *
- * Returns: A new iterator
+ * Returns: (transfer full): A new iterator
  */
 GcIterator *
 gc_iterable_iterator (GcIterable *self)

@@ -46,7 +46,7 @@ gc_iterator_next (GcIterator *self)
  * gc_iterator_get:
  * @iterator: A #GcIterator instance
  *
- * Returns: The next value
+ * Returns: (transfer none): The next value
  */
 gpointer
 gc_iterator_get (GcIterator *self)

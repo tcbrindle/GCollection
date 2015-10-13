@@ -172,7 +172,7 @@ gc_array_list_get_is_empty (GcArrayList *self)
  * @array: A #GcArrayList
  * @index: A position in the array
  *
- * Returns: The element at position @index in @array
+ * Returns: (transfer none): The element at position @index in @array
  */
 gpointer
 gc_array_list_get (GcArrayList *self, gsize index)

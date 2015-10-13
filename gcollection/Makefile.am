@@ -41,6 +41,7 @@ pkgconfig_DATA = gcollection.pc
 INTROSPECTION_GIRS =
 INTROSPECTION_SCANNER_ARGS = \
     --add-include-path=$(srcdir) \
+    --identifier-prefix=Gc \
     --symbol-prefix=gc \
     --warn-all -v
 INTROSPECTION_COMPILER_ARGS = --includedir=$(srcdir)
