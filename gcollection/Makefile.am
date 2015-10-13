@@ -29,6 +29,7 @@ libgcollection_la_LIBADD = \
 
 include_HEADERS = \
 	gc-array-list.h \
+	gcollection.h \
 	gc-iterable.h \
 	gc-iterator.h \
 	${NULL}
