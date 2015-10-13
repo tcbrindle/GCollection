@@ -227,6 +227,14 @@ gc_array_list_set (GcArrayList *self, guint index, gpointer value)
   self->free_func (old_element);
 }
 
+/**
+ * gc_array_list_append:
+ * @array: A #GcArrayList
+ * @value: A value to insert
+ *
+ * Inserts a copy of @value at the end of @array. The array will grow in size
+ * if necessary.
+ */
 void
 gc_array_list_append (GcArrayList *self, gpointer value)
 {
@@ -236,6 +244,69 @@ gc_array_list_append (GcArrayList *self, gpointer value)
 
   g_object_notify (G_OBJECT (self), "size");
   if (self->ptr_array->len == 1)
+    {
+      g_object_notify (G_OBJECT (self), "is-empty");
+    }
+}
+
+/**
+ * gc_array_list_prepend:
+ * @array: A #GcArrayList
+ * @value: A value to insert
+ *
+ * Inserts a copy of @value at the start of @array. The array will grow in size
+ * if necessary
+ */
+void
+gc_array_list_prepend (GcArrayList *self, gpointer value)
+{
+  g_return_if_fail (GC_IS_ARRAY_LIST (self));
+
+  g_ptr_array_insert (self->ptr_array, 0, self->copy_func (value));
+
+  g_object_notify (G_OBJECT (self), "size");
+  if (self->ptr_array->len == 1)
+    {
+      g_object_notify (G_OBJECT (self), "is-empty");
+    }
+}
+
+/**
+ * gc_array_list_insert:
+ * @array: A #GcArrayList
+ * @index: Position in @array to insert @value
+ * @value: A value to insert
+ *
+ * Inserts @value at position @index in @array. The array will grow in size if
+ * necessary.
+ */
+void
+gc_array_list_insert (GcArrayList *self, guint index, gpointer value)
+{
+  g_return_if_fail (GC_IS_ARRAY_LIST (self));
+
+  g_ptr_array_insert (self->ptr_array, index, self->copy_func (value));
+
+  g_object_notify (G_OBJECT (self), "size");
+}
+
+/**
+ * gc_array_list_remove:
+ * @array: A #GcArrayList
+ * @index: Position of the element to be removed
+ *
+ * Removes the value at position @index in @array. The following elements will
+ * be moved down one place.
+ */
+void
+gc_array_list_remove (GcArrayList *self, guint index)
+{
+  g_return_if_fail (GC_IS_ARRAY_LIST (self));
+
+  g_ptr_array_remove_index (self->ptr_array, index);
+
+  g_object_notify (G_OBJECT (self), "size");
+  if (self->ptr_array->len == 0)
     {
       g_object_notify (G_OBJECT (self), "is-empty");
     }

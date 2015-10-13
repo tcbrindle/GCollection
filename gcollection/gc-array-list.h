@@ -39,15 +39,29 @@ GcArrayList     *gc_array_list_new_full               (GType          element_ty
 
 GPtrArray       *gc_array_list_get_ptr_array          (GcArrayList *array);
 
+guint            gc_array_list_get_size               (GcArrayList *array);
+
 gpointer         gc_array_list_get                    (GcArrayList *array,
                                                        guint        index);
 
-guint            gc_array_list_get_size               (GcArrayList *array);
+void             gc_array_list_set                    (GcArrayList *array,
+                                                       guint        index,
+                                                       gpointer     value);
 
 gboolean         gc_array_list_get_is_empty           (GcArrayList *array);
 
 void             gc_array_list_append                 (GcArrayList *array,
                                                        gpointer     value);
+
+void             gc_array_list_prepend                (GcArrayList *array,
+                                                       gpointer     value);
+
+void             gc_array_list_insert                 (GcArrayList *array,
+                                                       guint        index,
+                                                       gpointer     value);
+
+void             gc_array_list_remove                 (GcArrayList *array,
+                                                       guint        index);
 
 G_END_DECLS
 
