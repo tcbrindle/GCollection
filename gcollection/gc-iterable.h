@@ -19,11 +19,9 @@
 #ifndef GC_ITERABLE_H
 #define GC_ITERABLE_H
 
-#include <glib-object.h>
+#include "gc-iterator.h"
 
 G_BEGIN_DECLS
-
-typedef struct _GcIterator GcIterator;
 
 #define GC_TYPE_ITERABLE               (gc_iterable_get_type ())
 #define GC_ITERABLE_GET_INTERFACE(obj) (G_TYPE_INSTANCE_GET_INTERFACE ((obj), GC_TYPE_ITERABLE, GcIterableInterface))
