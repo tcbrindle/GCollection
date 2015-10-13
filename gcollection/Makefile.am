@@ -5,6 +5,7 @@ NULL =
 lib_LTLIBRARIES = libgcollection.la
 
 libgcollection_la_SOURCES = \
+	gc-array-list.c gc-array-list.h \
 	gc-iterable.c gc-iterable.h \
 	gc-iterator.c gc-iterator.h \
 	$(NULL)
@@ -27,6 +28,7 @@ libgcollection_la_LIBADD = \
 	${NULL}
 
 include_HEADERS = \
+	gc-array-list.h \
 	gc-iterable.h \
 	gc-iterator.h \
 	${NULL}
