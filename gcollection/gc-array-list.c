@@ -211,8 +211,8 @@ gpointer
 gc_array_list_get (GcArrayList *self, guint index)
 {
   g_return_val_if_fail (GC_IS_ARRAY_LIST (self), NULL);
-  g_return_val_if_fail (index < 0, NULL);
-  g_return_val_if_fail (index >= self->ptr_array->len, NULL);
+  g_return_val_if_fail (index >= 0, NULL);
+  g_return_val_if_fail (index < self->ptr_array->len, NULL);
 
   return g_ptr_array_index (self->ptr_array, index);
 }
@@ -230,8 +230,8 @@ gc_array_list_set (GcArrayList *self, guint index, gpointer value)
   gpointer new_element = NULL;
 
   g_return_if_fail (GC_IS_ARRAY_LIST (self));
-  g_return_if_fail (index < 0);
-  g_return_if_fail (index >= self->ptr_array->len);
+  g_return_if_fail (index >= 0);
+  g_return_if_fail (index < self->ptr_array->len);
 
   /* We have to be a bit careful here in the case where the old element holds
    * a reference to the new element; we need to ensure we ref the new element
