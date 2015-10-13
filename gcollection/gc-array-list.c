@@ -283,19 +283,19 @@ gc_array_list_get_property (GObject    *object,
     switch (prop_id)
       {
       case PROP_PTR_ARRAY:
-        g_value_set_boxed (value, self->ptr_array);
+        g_value_set_boxed (value, gc_array_list_get_ptr_array (self));
         break;
 
       case PROP_ELEMENT_TYPE:
-        g_value_set_gtype (value, self->element_type);
+        g_value_set_gtype (value, gc_array_list_get_element_type (self));
         break;
 
       case PROP_SIZE:
-        g_value_set_uint (value, self->ptr_array->len);
+        g_value_set_uint (value, gc_array_list_get_size (self));
         break;
 
       case PROP_IS_EMPTY:
-        g_value_set_boolean (value, self->ptr_array->len == 0);
+        g_value_set_boolean (value, gc_array_list_get_is_empty (self));
         break;
 
       default:
