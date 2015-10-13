@@ -46,6 +46,9 @@ VAPIGEN_CHECK($VALA_REQUIRED)
 #fi
 #AM_CONDITIONAL(HAVE_VALAC, test "x$VALAC" != "x")
 
+AC_PATH_PROG([GTESTER], [gtester])
+AC_PATH_PROG([GTESTER_REPORT], [gtester-report])
+AM_CONDITIONAL(ENABLE_GLIB_TEST, test "x$enable_glibtest" = "xyes")
 
 AC_OUTPUT([
 Makefile
