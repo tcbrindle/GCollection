@@ -45,7 +45,7 @@ enum {
   PROP_COPY_FUNC,
   PROP_FREE_FUNC,
   PROP_SIZE,
-  PROP_EMPTY,
+  PROP_IS_EMPTY,
   LAST_PROP
 };
 
@@ -279,7 +279,7 @@ gc_array_list_get_property (GObject    *object,
         g_value_set_uint (value, self->ptr_array->len);
         break;
 
-      case PROP_EMPTY:
+      case PROP_IS_EMPTY:
         g_value_set_boolean (value, self->ptr_array->len == 0);
         break;
 
@@ -365,8 +365,8 @@ gc_array_list_class_init (GcArrayListClass *klass)
                           G_PARAM_STATIC_STRINGS |
                           G_PARAM_READABLE);
 
-  gParamSpecs[PROP_EMPTY] =
-      g_param_spec_boolean ("empty", "empty",
+  gParamSpecs[PROP_IS_EMPTY] =
+      g_param_spec_boolean ("is-empty", "is-empty",
                             "Whether the container is empty or not",
                             TRUE,
                             G_PARAM_STATIC_STRINGS |

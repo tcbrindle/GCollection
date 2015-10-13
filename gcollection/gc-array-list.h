@@ -44,7 +44,7 @@ gpointer         gc_array_list_get                    (GcArrayList *array,
 
 guint            gc_array_list_get_size               (GcArrayList *array);
 
-gboolean         gc_array_list_empty                  (GcArrayList *array);
+gboolean         gc_array_list_get_is_empty           (GcArrayList *array);
 
 void             gc_array_list_append                 (GcArrayList *array,
                                                        gpointer     value);
