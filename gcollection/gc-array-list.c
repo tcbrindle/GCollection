@@ -233,6 +233,12 @@ gc_array_list_append (GcArrayList *self, gpointer value)
   g_return_if_fail (GC_IS_ARRAY_LIST (self));
 
   g_ptr_array_add (self->ptr_array, self->copy_func (value));
+
+  g_object_notify (G_OBJECT (self), "size");
+  if (self->ptr_array->len == 1)
+    {
+      g_object_notify (G_OBJECT (self), "is-empty");
+    }
 }
 
 /******************************************************************************
