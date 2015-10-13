@@ -125,6 +125,21 @@ gc_array_list_new_full (GType element_type,
 }
 
 /**
+ * gc_array_list_get_ptr_array:
+ * @array: A #GcArrayList
+ *
+ * Returns: (transfer none): The underlying #GPtrArray used by @array. Do not
+ * free or unref.
+ */
+GPtrArray *
+gc_array_list_get_ptr_array (GcArrayList *self)
+{
+  g_return_val_if_fail (GC_IS_ARRAY_LIST (self), NULL);
+
+  return self->ptr_array;
+}
+
+/**
  * gc_array_list_get_element_type:
  * @array: A #GcArrayList
  *
