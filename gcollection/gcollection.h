@@ -23,5 +23,13 @@
 #include "gc-iterable.h"
 #include "gc-iterator.h"
 
+#define GC_FOREACH(_var, _container, _code) { \
+    GcIterator *_gcIter = gc_iterable_iterator (GC_ITERABLE (_container)); \
+    while (gc_iterator_next (_gcIter)) { \
+        _var = gc_iterator_get (_gcIter); \
+        _code \
+    } \
+    g_object_unref (_gcIter); }
+
 #endif /* GCOLLECTION_H */
 
