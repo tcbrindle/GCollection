@@ -75,13 +75,10 @@ test_array_list_append (void)
   g_assert_false (gc_array_list_get_is_empty (array_list));
   g_assert_cmpuint (gc_array_list_get_size (array_list), ==, NUM_OBJECTS);
 
-  g_autoptr(GcIterator) iter = gc_iterable_iterator (GC_ITERABLE (array_list));
-
   i = 0;
-  while (gc_iterator_next (iter)) {
-      TestObject *t = TEST_OBJECT (gc_iterator_get (iter));
+  GC_FOREACH (TestObject *t, array_list, {
       g_assert_cmpint (t->index, ==, i++);
-  }
+  });
 }
 
 static void
@@ -107,13 +104,10 @@ test_array_list_prepend (void)
     }
   g_assert_cmpuint (gc_array_list_get_size (array_list), ==, NUM_OBJECTS);
 
-  g_autoptr(GcIterator) iter = gc_iterable_iterator (GC_ITERABLE (array_list));
-
   i = NUM_OBJECTS;
-  while (gc_iterator_next (iter)) {
-      TestObject *t = TEST_OBJECT (gc_iterator_get (iter));
+  GC_FOREACH (TestObject *t, array_list, {
       g_assert_cmpint (t->index, ==, --i);
-  }
+  });
 
 }
 
