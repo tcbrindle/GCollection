@@ -18,6 +18,7 @@
 
 #include "gc-array-list.h"
 
+#include "gc-array-list-iterator.h"
 #include "gc-iterable.h"
 #include "gc-iterator.h"
 
@@ -32,7 +33,6 @@ struct _GcArrayList
 };
 
 static void gc_array_list_iterable_init (GcIterableInterface *iface);
-static GcIterator *gc_array_list_iter_new (GcArrayList *array);
 
 G_DEFINE_TYPE_WITH_CODE (GcArrayList, gc_array_list, G_TYPE_OBJECT,
                          G_IMPLEMENT_INTERFACE (GC_TYPE_ITERABLE,
@@ -341,7 +341,7 @@ gc_array_list_iterator (GcIterable *iterable)
 {
   g_return_val_if_fail (GC_IS_ARRAY_LIST (iterable), NULL);
 
-  return gc_array_list_iter_new ((GcArrayList *) iterable);
+  return gc_array_list_iterator_new ((GcArrayList *) iterable);
 }
 
 static void
@@ -496,74 +496,4 @@ gc_array_list_iterable_init (GcIterableInterface *iface)
     iface->iterator = gc_array_list_iterator;
 }
 
-/******************************************************************************
- *
- * Iterator definition
- *
- ******************************************************************************/
-
-#define GC_TYPE_ARRAY_LIST_ITER (gc_array_list_iter_get_type ())
-
-G_DECLARE_FINAL_TYPE (GcArrayListIter, gc_array_list_iter, GC, ARRAY_LIST_ITER, GcIterator)
-
-struct _GcArrayListIter
-{
-  GcIterator parent;
-
-  GcArrayList *array;
-  guint pos;
-};
-
-G_DEFINE_TYPE (GcArrayListIter, gc_array_list_iter, GC_TYPE_ITERATOR)
-
-static GcIterator *
-gc_array_list_iter_new (GcArrayList *array)
-{
-  GcArrayListIter *iter = g_object_new (GC_TYPE_ARRAY_LIST_ITER, NULL);
-  iter->array = g_object_ref (array);
-
-  return GC_ITERATOR (iter);
-}
-
-static gboolean
-gc_array_list_iter_next (GcIterator *iter)
-{
-  GcArrayListIter *self = GC_ARRAY_LIST_ITER (iter);
-  return (++self->pos < self->array->ptr_array->len);
-}
-
-static gpointer
-gc_array_list_iter_get (GcIterator *iter)
-{
-  GcArrayListIter *self = GC_ARRAY_LIST_ITER (iter);
-  return g_ptr_array_index (self->array->ptr_array, self->pos);
-}
-
-static void
-gc_array_list_iter_finalize (GObject *object)
-{
-  GcArrayListIter *self = GC_ARRAY_LIST_ITER (object);
-
-  g_clear_object (&self->array);
-
-  G_OBJECT_CLASS (gc_array_list_iter_parent_class)->finalize (object);
-}
-
-static void
-gc_array_list_iter_class_init (GcArrayListIterClass *klass)
-{
-  GObjectClass *object_class = G_OBJECT_CLASS (klass);
-  GcIteratorClass *iter_class = GC_ITERATOR_CLASS (klass);
-
-  object_class->finalize = gc_array_list_iter_finalize;
-
-  iter_class->next = gc_array_list_iter_next;
-  iter_class->get = gc_array_list_iter_get;
-}
-
-static void
-gc_array_list_iter_init (GcArrayListIter *self)
-{
-  self->pos = -1;
-}
 

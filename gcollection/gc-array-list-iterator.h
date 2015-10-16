@@ -1,4 +1,4 @@
-/* gcollection.h
+/* gc-array-list-iterator.h
  *
  * Copyright (C) 2015 Tristan Brindle <t.c.brindle@gmail.com>
  *
@@ -16,21 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef GCOLLECTION_H
-#define GCOLLECTION_H
+#ifndef GC_ARRAY_LIST_ITERATOR_H
+#define GC_ARRAY_LIST_ITERATOR_H
 
 #include "gc-array-list.h"
-#include "gc-array-list-iterator.h"
-#include "gc-iterable.h"
 #include "gc-iterator.h"
 
-#define GC_FOREACH(_var, _container, _code) { \
-    GcIterator *_gcIter = gc_iterable_iterator (GC_ITERABLE (_container)); \
-    while (gc_iterator_next (_gcIter)) { \
-        _var = gc_iterator_get (_gcIter); \
-        _code \
-    } \
-    g_object_unref (_gcIter); }
+G_BEGIN_DECLS
 
-#endif /* GCOLLECTION_H */
+#define GC_TYPE_ARRAY_LIST_ITERATOR (gc_array_list_iterator_get_type())
 
+G_DECLARE_FINAL_TYPE (GcArrayListIterator, gc_array_list_iterator, GC, ARRAY_LIST_ITERATOR, GcIterator)
+
+GcIterator *gc_array_list_iterator_new (GcArrayList *array_list);
+
+GcIterator *gc_array_list_iterator_new_for_ptr_array (GPtrArray *ptr_array);
+
+G_END_DECLS
+
+#endif /* GC_ARRAY_LIST_ITERATOR_H */
