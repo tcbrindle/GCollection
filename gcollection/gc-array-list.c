@@ -44,8 +44,6 @@ enum {
   PROP_ELEMENT_TYPE,
   PROP_COPY_FUNC,
   PROP_FREE_FUNC,
-  PROP_SIZE,
-  PROP_IS_EMPTY,
   LAST_PROP
 };
 
@@ -137,9 +135,6 @@ gc_array_list_clear (GcArrayList *self)
 
   g_ptr_array_unref (self->ptr_array);
   self->ptr_array = g_ptr_array_new_with_free_func (self->free_func);
-
-  g_object_notify (G_OBJECT (self), "size");
-  g_object_notify (G_OBJECT (self), "is-empty");
 }
 
 /**
@@ -259,12 +254,6 @@ gc_array_list_append (GcArrayList *self, gpointer value)
   g_return_if_fail (GC_IS_ARRAY_LIST (self));
 
   g_ptr_array_add (self->ptr_array, self->copy_func (value));
-
-  g_object_notify (G_OBJECT (self), "size");
-  if (self->ptr_array->len == 1)
-    {
-      g_object_notify (G_OBJECT (self), "is-empty");
-    }
 }
 
 /**
@@ -281,12 +270,6 @@ gc_array_list_prepend (GcArrayList *self, gpointer value)
   g_return_if_fail (GC_IS_ARRAY_LIST (self));
 
   g_ptr_array_insert (self->ptr_array, 0, self->copy_func (value));
-
-  g_object_notify (G_OBJECT (self), "size");
-  if (self->ptr_array->len == 1)
-    {
-      g_object_notify (G_OBJECT (self), "is-empty");
-    }
 }
 
 /**
@@ -304,8 +287,6 @@ gc_array_list_insert (GcArrayList *self, guint index, gpointer value)
   g_return_if_fail (GC_IS_ARRAY_LIST (self));
 
   g_ptr_array_insert (self->ptr_array, index, self->copy_func (value));
-
-  g_object_notify (G_OBJECT (self), "size");
 }
 
 /**
@@ -322,12 +303,6 @@ gc_array_list_remove (GcArrayList *self, guint index)
   g_return_if_fail (GC_IS_ARRAY_LIST (self));
 
   g_ptr_array_remove_index (self->ptr_array, index);
-
-  g_object_notify (G_OBJECT (self), "size");
-  if (self->ptr_array->len == 0)
-    {
-      g_object_notify (G_OBJECT (self), "is-empty");
-    }
 }
 
 /******************************************************************************
@@ -383,14 +358,6 @@ gc_array_list_get_property (GObject    *object,
 
       case PROP_ELEMENT_TYPE:
         g_value_set_gtype (value, gc_array_list_get_element_type (self));
-        break;
-
-      case PROP_SIZE:
-        g_value_set_uint (value, gc_array_list_get_size (self));
-        break;
-
-      case PROP_IS_EMPTY:
-        g_value_set_boolean (value, gc_array_list_get_is_empty (self));
         break;
 
       default:
@@ -467,20 +434,6 @@ gc_array_list_class_init (GcArrayListClass *klass)
                             "GDestroyNotify used to free elements removed from the array",
                             G_PARAM_STATIC_STRINGS |
                             G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
-
-  gParamSpecs[PROP_SIZE] =
-      g_param_spec_uint ("size", "size",
-                          "Number of elements in the array",
-                          0, G_MAXUINT, 0,
-                          G_PARAM_STATIC_STRINGS |
-                          G_PARAM_READABLE);
-
-  gParamSpecs[PROP_IS_EMPTY] =
-      g_param_spec_boolean ("is-empty", "is-empty",
-                            "Whether the container is empty or not",
-                            TRUE,
-                            G_PARAM_STATIC_STRINGS |
-                            G_PARAM_READABLE);
 
   g_object_class_install_properties (object_class, LAST_PROP, gParamSpecs);
 }
