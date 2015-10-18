@@ -30,6 +30,7 @@ libgcollection_la_LIBADD = \
 
 include_HEADERS = \
 	gc-array-list.h \
+	gc-array-list-iterator.h \
 	gcollection.h \
 	gc-iterable.h \
 	gc-iterator.h \
