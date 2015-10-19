@@ -34,7 +34,6 @@ GcArrayList     *gc_array_list_new_with_element_type  (GType element_type);
 GcArrayList     *gc_array_list_new_from_ptr_array     (GPtrArray  *ptr_array);
 
 GcArrayList     *gc_array_list_new_full               (GType          element_type,
-                                                       GBoxedCopyFunc copy_func,
                                                        GDestroyNotify free_func);
 
 void             gc_array_list_clear                  (GcArrayList *array);

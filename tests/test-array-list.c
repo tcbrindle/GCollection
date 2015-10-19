@@ -5,7 +5,7 @@
 
 #define TEST_TYPE_OBJECT (test_object_get_type())
 
-G_DECLARE_FINAL_TYPE (TestObject, test_object, TEST, OBJECT, GInitiallyUnowned)
+G_DECLARE_FINAL_TYPE (TestObject, test_object, TEST, OBJECT, GObject)
 
 struct _TestObject
 {
@@ -14,7 +14,7 @@ struct _TestObject
   int index;
 };
 
-G_DEFINE_TYPE (TestObject, test_object, G_TYPE_INITIALLY_UNOWNED)
+G_DEFINE_TYPE (TestObject, test_object, G_TYPE_OBJECT)
 
 static TestObject *
 test_object_new (int index)
@@ -55,7 +55,6 @@ test_array_list_construct (void)
   g_object_unref (array_list);
 
   array_list = gc_array_list_new_full (TEST_TYPE_OBJECT,
-                                       g_object_ref,
                                        g_object_unref);
   g_assert_nonnull (array_list);
   g_assert_true (gc_array_list_get_is_empty (array_list));
@@ -95,7 +94,8 @@ static void
 test_array_list_prepend (void)
 {
   int i;
-  g_autoptr(GcArrayList) array_list = gc_array_list_new ();
+  g_autoptr(GcArrayList) array_list = gc_array_list_new_full (TEST_TYPE_OBJECT,
+                                                              g_object_unref);
 
   for (i = 0; i < NUM_OBJECTS; i++)
     {
@@ -114,7 +114,8 @@ test_array_list_prepend (void)
 static void
 test_array_list_get (void)
 {
-  g_autoptr(GcArrayList) array_list = gc_array_list_new ();
+  g_autoptr(GcArrayList) array_list = gc_array_list_new_full (TEST_TYPE_OBJECT,
+                                                              g_object_unref);
 
   TestObject *in = test_object_new (-1);
 
@@ -128,7 +129,8 @@ test_array_list_get (void)
 static void
 test_array_list_set (void)
 {
-  g_autoptr(GcArrayList) array_list = gc_array_list_new ();
+  g_autoptr(GcArrayList) array_list = gc_array_list_new_full (TEST_TYPE_OBJECT,
+                                                              g_object_unref);
   for (int i = 0; i < NUM_OBJECTS; i++)
     {
       gc_array_list_append (array_list, test_object_new (i));
@@ -145,14 +147,14 @@ test_array_list_set (void)
 static void
 test_array_list_insert (void)
 {
-  g_autoptr(GcArrayList) array_list = gc_array_list_new ();
+  g_autoptr(GcArrayList) array_list = gc_array_list_new_full (TEST_TYPE_OBJECT,
+                                                              g_object_unref);
   for (int i = 0; i < NUM_OBJECTS; i++)
     {
       gc_array_list_append (array_list, test_object_new (i));
     }
 
 
-  //g_autoptr(TestObject) in = test_object_new (-1);
   TestObject *in = test_object_new (-1);
   gc_array_list_insert (array_list, 3, in);
 

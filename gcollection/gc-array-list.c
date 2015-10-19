@@ -28,7 +28,6 @@ struct _GcArrayList
 
   GPtrArray *ptr_array;
   GType element_type;
-  GBoxedCopyFunc copy_func;
   GDestroyNotify free_func;
 };
 
@@ -42,7 +41,6 @@ enum {
   PROP_0,
   PROP_PTR_ARRAY,
   PROP_ELEMENT_TYPE,
-  PROP_COPY_FUNC,
   PROP_FREE_FUNC,
   LAST_PROP
 };
@@ -86,7 +84,6 @@ gc_array_list_new_with_element_type (GType element_type)
   g_return_val_if_fail (g_type_is_a (element_type, G_TYPE_OBJECT), NULL);
 
   return gc_array_list_new_full (element_type,
-                                 g_object_ref_sink,
                                  g_object_unref);
 }
 
@@ -112,12 +109,10 @@ gc_array_list_new_from_ptr_array (GPtrArray *ptr_array)
  */
 GcArrayList *
 gc_array_list_new_full (GType element_type,
-                        GBoxedCopyFunc copy_func,
                         GDestroyNotify free_func)
 {
   return g_object_new (GC_TYPE_ARRAY_LIST,
                        "element-type", element_type,
-                       "copy-func", copy_func,
                        "free-func", free_func,
                        NULL);
 }
@@ -222,7 +217,6 @@ void
 gc_array_list_set (GcArrayList *self, guint index, gpointer value)
 {
   gpointer old_element = NULL;
-  gpointer new_element = NULL;
 
   g_return_if_fail (GC_IS_ARRAY_LIST (self));
   g_return_if_fail (index >= 0);
@@ -232,10 +226,9 @@ gc_array_list_set (GcArrayList *self, guint index, gpointer value)
    * a reference to the new element; we need to ensure we ref the new element
    * before unreffing the old
    */
-  new_element = self->copy_func (value);
   old_element = gc_array_list_get (self, index);
 
-  g_ptr_array_index (self->ptr_array, index) = new_element;
+  g_ptr_array_index (self->ptr_array, index) = value;
 
   self->free_func (old_element);
 }
@@ -253,7 +246,7 @@ gc_array_list_append (GcArrayList *self, gpointer value)
 {
   g_return_if_fail (GC_IS_ARRAY_LIST (self));
 
-  g_ptr_array_add (self->ptr_array, self->copy_func (value));
+  g_ptr_array_add (self->ptr_array, value);
 }
 
 /**
@@ -269,7 +262,7 @@ gc_array_list_prepend (GcArrayList *self, gpointer value)
 {
   g_return_if_fail (GC_IS_ARRAY_LIST (self));
 
-  g_ptr_array_insert (self->ptr_array, 0, self->copy_func (value));
+  g_ptr_array_insert (self->ptr_array, 0, value);
 }
 
 /**
@@ -286,7 +279,7 @@ gc_array_list_insert (GcArrayList *self, guint index, gpointer value)
 {
   g_return_if_fail (GC_IS_ARRAY_LIST (self));
 
-  g_ptr_array_insert (self->ptr_array, index, self->copy_func (value));
+  g_ptr_array_insert (self->ptr_array, index, value);
 }
 
 /**
@@ -384,11 +377,6 @@ gc_array_list_set_property (GObject      *object,
         self->element_type = g_value_get_gtype (value);
         break;
 
-      case PROP_COPY_FUNC:
-        g_assert_null (self->copy_func);
-        self->copy_func = g_value_get_pointer (value);
-        break;
-
       case PROP_FREE_FUNC:
         g_assert_null (self->free_func);
         self->free_func = g_value_get_pointer (value);
@@ -422,12 +410,6 @@ gc_array_list_class_init (GcArrayListClass *klass)
                           G_TYPE_NONE,
                           G_PARAM_STATIC_STRINGS |
                           G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
-
-  gParamSpecs[PROP_COPY_FUNC] =
-      g_param_spec_pointer ("copy-func", "copy-func",
-                            "GBoxedCopyFunc used to copy elements into the array",
-                            G_PARAM_STATIC_STRINGS |
-                            G_PARAM_READWRITE | G_PARAM_CONSTRUCT_ONLY);
 
   gParamSpecs[PROP_FREE_FUNC] =
       g_param_spec_pointer ("free-func", "free-func",
